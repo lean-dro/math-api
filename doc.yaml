@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: math-api
+  version: '1.0.0'
+  description: Api com endpoints destinados a resolver demandas matemáticas separadas de acordo com o nível de complexidade
+  contact:
+    name: "Leandro Coelho Saraiva"
+    email: "leandro.coelho.dev@outlook.com"
+
+tags:
+  - name: basic
+    description: Demandas básicas
+paths:
+  /sum:
+    get:
+      parameters: 
+        - $ref: '#/components/parameters/Lista'
+      description: Soma de valores
+      tags:
+        - basic
+      responses:
+        '200':
+          description: Soma concluída com sucesso!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/ResultResponseSumModel'
+                   
+                      
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalidaResponse'
+        '500':
+          $ref: '#/components/responses/ErroInternoResponse'
+
+  /subtraction:
+      get:
+        parameters: 
+          - $ref: '#/components/parameters/Lista'
+        description: Subtração de valores
+        tags:
+          - basic
+        responses:
+          '200':
+            description: Subtração concluída com sucesso!
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      $ref: '#/components/schemas/ResultResponseSubtractionModel'
+                     
+                        
+          '400':
+            $ref: '#/components/responses/RequisicaoInvalidaResponse'
+          '500':
+            $ref: '#/components/responses/ErroInternoResponse'
+
+  /multiplication:
+    get:
+      parameters: 
+        - $ref: '#/components/parameters/Lista'
+      description: Multiplicação de valores
+      tags:
+        - basic
+      responses:
+        '200':
+          description: Multiplicação concluída com sucesso!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/ResultResponseMultiplicationModel'
+                   
+                      
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalidaResponse'
+        '500':
+          $ref: '#/components/responses/ErroInternoResponse'          
+  /division:
+    get:
+      parameters: 
+        - $ref: '#/components/parameters/Lista'
+      description: Divisão de valores
+      tags:
+        - basic
+      responses:
+        '200':
+          description: Divisão concluída com sucesso!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/ResultResponseDivisionModel'
+                   
+                      
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalidaResponse'
+        '500':
+          $ref: '#/components/responses/ErroInternoResponse'            
+components:
+  responses:
+    RequisicaoInvalidaResponse:
+      description: Requisição feita de maneira incorreta!
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RequisicaoInvalidaModel"
+            
+    ErroInternoResponse:
+      description: Erro interno do servidor
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErroInternoModel"
+  
+  schemas:
+    RequisicaoInvalidaModel:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Parâmetro inválido"
+          
+    ErroInternoModel:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro interno"
+          
+          
+    ResultResponseSumModel:
+      type: object
+      example: 
+        numbers:
+         - 1 
+         - 2
+         - 3
+        result: 6
+      properties:
+        numbers:
+          type: array
+          items:
+            type: number
+        result: 
+          type: number
+
+    ResultResponseSubtractionModel:
+      type: object
+      example: 
+        numbers:
+         - 20 
+         - 5
+        result: 15
+      properties:
+        numbers:
+          type: array
+          items:
+            type: number
+        result: 
+          type: number
+
+    ResultResponseMultiplicationModel:
+      type: object
+      example: 
+        numbers:
+         - 22 
+         - 6
+        result: 132
+      properties:
+        numbers:
+          type: array
+          items:
+            type: number
+        result: 
+          type: number
+          
+    ResultResponseDivisionModel:
+      type: object
+      example: 
+        numbers:
+         - 24 
+         - 4
+        result: 6
+      properties:
+        numbers:
+          type: array
+          items:
+            type: number
+        result: 
+          type: number  
+  
+  parameters:
+    Lista:
+      description: | 
+         ### Lista de valores.
+          * Obs: Caso a lista contenha mais de dois valores o resultado do retorno será a operação entre os resultados com os valores sequentes, conforme o endpoint.
+          
+ 
+          #### 
+          ```
+          "list": [1, 2, 3]
+          ```
+          ```
+          1 + 2 = 3
+          3 + 3 = 6
+          ```
+      name: list
+      in: query
+      schema:
+        type: array
+        items:
+          type: number
+      example: 
+        - 1
+        - 2
+        - 3
+    
+        
